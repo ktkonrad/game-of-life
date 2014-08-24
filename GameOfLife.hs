@@ -1,11 +1,8 @@
--- Conway's Game of Life in the terminal
--- Dependencies: ansi-terminal, terminal-size
+-- Conway's Game of Life.
 
 module GameOfLife 
     ( State(Alive, Dead), Board(Board)
     , nextBoard) where
-
-import System.Random
 
 testAll :: Bool
 testAll = all id [ testGetCell
@@ -49,14 +46,8 @@ testNextBoard :: Bool
 testNextBoard = all (all (== Alive)) $ cells $ nextBoard testBoard
 
 data State = Alive | Dead
-	 deriving (Eq, Enum, Bounded)
-
-instance Random State where
-    randomR (a, b) g =
-        case randomR (fromEnum a, fromEnum b) g of
-          (x, g') -> (toEnum x, g')
-    random g = randomR (minBound, maxBound) g
-
+     deriving (Eq, Enum, Bounded)
+         
 instance Show State where
     show Alive = "O"
     show Dead  = " "
@@ -101,4 +92,3 @@ nextBoard :: Board -> Board
 nextBoard b = Board (numRows b) (numCols b) [
                [nextState b (Point r c) | c <- [0..(pred $ numCols b)]]
                    | r <- [0..(pred $ numRows b)]]
-

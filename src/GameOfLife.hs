@@ -1,49 +1,14 @@
 -- Conway's Game of Life.
 
 module GameOfLife 
-    ( State(Alive, Dead), Board(Board)
+    ( Board(..)
+    , State(..)
+    , Point(..)
+    , getCell
+    , getNeighbors
+    , countLiving
+    , nextState
     , nextBoard) where
-
-testAll :: Bool
-testAll = all id [ testGetCell
-                 , testGetNeighbors
-                 , testGetNeighborsWrap
-                 , testCountLiving
-                 , testNextState ]
-
-testBoard :: Board
-testBoard = Board 3 3 [[Alive, Dead, Dead],
-                       [Dead,  Dead, Alive],
-                       [Alive, Dead, Dead]]
-
-testGetCell :: Bool
-testGetCell = 
-  let p = (Point 1 1)
-  in getCell testBoard p == Dead
-
-testGetNeighbors :: Bool
-testGetNeighbors = 
-  let neighbors = [Alive, Dead, Dead, Dead, Alive, Alive, Dead, Dead]
-      point = Point 1 1 
-   in neighbors == (getNeighbors testBoard point)
-
-testGetNeighborsWrap :: Bool
-testGetNeighborsWrap = 
-  let neighbors = [Dead, Alive, Dead, Dead, Dead, Alive, Dead, Dead]
-      point = Point 0 0 
-   in neighbors == (getNeighbors testBoard point)
-
-
-testCountLiving :: Bool
-testCountLiving =
-  let cells = [Alive, Dead, Dead, Dead, Alive, Alive, Dead, Alive]
-  in countLiving cells == 4
-
-testNextState :: Bool
-testNextState = nextState testBoard (Point 1 1) == Alive
-
-testNextBoard :: Bool
-testNextBoard = all (all (== Alive)) $ cells $ nextBoard testBoard
 
 data State = Alive | Dead
      deriving (Eq, Enum, Bounded)
@@ -72,9 +37,9 @@ getCell b (Point r c) = cells b !! r !! c
 getNeighbors :: Board -> Point -> [State]
 getNeighbors b (Point row col) =
   let offsets = [(-1), 0, 1]
-      rows = [r | r <- map (row +) offsets]
       neighborPoints = [Point (r `mod` numRows b) (c `mod` numCols b)
-                        | c <- map (col +) offsets, r <- rows, r /= row || c /= col]
+                       | r <- map (row +) offsets, c <- map (col +) offsets
+                       , r /= row || c /= col]
   in map (getCell b) neighborPoints
 
 countLiving :: [State] -> Int

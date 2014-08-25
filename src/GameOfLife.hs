@@ -3,9 +3,10 @@
 module GameOfLife      ( Board(..)
                        , State(..)
                        , Point(..)
+                       , cellsWithPositions
+                       , countLiving
                        , getCell
                        , getNeighbors
-                       , countLiving
                        , nextState
                        , nextBoard
                        , randomBoard ) where
@@ -76,3 +77,8 @@ instance Random State where
 randomBoard :: Int -> Int -> StdGen -> Board
 randomBoard rows cols gen =
   Board rows cols (take rows $ chunksOf cols $ (randoms gen :: [State]))
+
+cellsWithPositions :: Board -> [(Point, State)]
+cellsWithPositions (Board rows cols cells) =
+    zip [Point r c | r <- [0..(pred rows)], c <- [0..(pred cols)]]
+        $ concat cells

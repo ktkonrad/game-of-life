@@ -26,7 +26,7 @@ test-suite game-of-life-test
                        test-framework       >= 0.8,
                        test-framework-hunit >= 0.3
 
-executable game-of-life
+executable game-of-life-terminal
   main-is:             MainTerminal.hs
   hs-source-dirs:      src
   other-modules:       GameOfLife
@@ -36,3 +36,13 @@ executable game-of-life
                        ansi-terminal        >= 0.6.1.1,
                        random               >= 1.0.1.1,
                        terminal-size        >= 0.2.1.0
+
+executable game-of-life-gloss
+  main-is:             MainGloss.hs
+  hs-source-dirs:      src
+  other-modules:       GameOfLife
+  build-depends:       base,
+                       game-of-life,
+                       split                >= 0.2.2,
+                       random               >= 1.0.1.1,
+                       gloss                >= 1.8.1

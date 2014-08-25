@@ -17,8 +17,8 @@ instance Random State where
 printAndWait :: Board -> IO()
 printAndWait b = do
   clearScreen
-  print b
-  threadDelay 250000 -- microseconds
+  putStr $ show b    -- without newline
+  threadDelay 100000 -- microseconds
   return ()
 
 getTerminalSizeWithDefault :: Int -> IO (Int, Int)

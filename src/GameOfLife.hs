@@ -10,6 +10,8 @@ module GameOfLife
     , nextState
     , nextBoard) where
 
+import Data.List ( intercalate )
+
 data State = Alive | Dead
      deriving (Eq, Enum, Bounded)
          
@@ -28,7 +30,8 @@ data Board = Board {
 }
 
 instance Show Board where
-    show = unlines . map unwords . (map $ map show) . cells
+    -- unlines adds an unwanted trailing newline so use intercalate instead.
+    show = intercalate "\n" . map unwords . (map $ map show) . cells
 
 getCell :: Board -> Point -> State
 getCell b (Point r c) = cells b !! r !! c

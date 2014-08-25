@@ -1,16 +1,22 @@
 -- Conway's Game of Life.
 
-module GameOfLife 
-    ( Board(..)
-    , State(..)
-    , Point(..)
-    , getCell
-    , getNeighbors
-    , countLiving
-    , nextState
-    , nextBoard) where
+module GameOfLife      ( Board(..)
+                       , State(..)
+                       , Point(..)
+                       , getCell
+                       , getNeighbors
+                       , countLiving
+                       , nextState
+                       , nextBoard
+                       , randomBoard ) where
 
-import Data.List ( intercalate )
+import Data.List       ( intercalate )
+import Data.List.Split ( chunksOf )
+import System.Random   ( Random
+                       , StdGen
+                       , randomR
+                       , random
+                       , randoms )
 
 data State = Alive | Dead
      deriving (Eq, Enum, Bounded)
@@ -60,3 +66,13 @@ nextBoard :: Board -> Board
 nextBoard b = Board (numRows b) (numCols b) [
                [nextState b (Point r c) | c <- [0..(pred $ numCols b)]]
                    | r <- [0..(pred $ numRows b)]]
+
+instance Random State where
+    randomR (a, b) g =
+        case randomR (fromEnum a, fromEnum b) g of
+          (x, g') -> (toEnum x, g')
+    random g = randomR (minBound, maxBound) g
+
+randomBoard :: Int -> Int -> StdGen -> Board
+randomBoard rows cols gen =
+  Board rows cols (take rows $ chunksOf cols $ (randoms gen :: [State]))

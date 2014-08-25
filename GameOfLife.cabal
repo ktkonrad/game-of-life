@@ -12,7 +12,9 @@ cabal-version:       >=1.8
 library
   hs-source-dirs:      src
   exposed-modules:     GameOfLife
-  build-depends:       base
+  build-depends:       base,
+                       split                >= 0.2.2,
+                       random               >= 1.0.1.1
 
 test-suite game-of-life-test
   type:                exitcode-stdio-1.0
@@ -29,7 +31,8 @@ executable game-of-life
   hs-source-dirs:      src
   other-modules:       GameOfLife
   build-depends:       base,
+                       game-of-life,
+                       split                >= 0.2.2,
                        ansi-terminal        >= 0.6.1.1,
                        random               >= 1.0.1.1,
-                       terminal-size        >= 0.2.1.0,
-                       split                >= 0.2.2
+                       terminal-size        >= 0.2.1.0
